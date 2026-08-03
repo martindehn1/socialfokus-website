@@ -110,27 +110,6 @@
     updateTimeline();
   }
 
-  /* ---------- YouTube facade (click-to-load) ---------- */
-  const ytFacade = document.getElementById("ytFacade");
-  if (ytFacade) {
-    const loadVideo = () => {
-      const id = ytFacade.dataset.videoId;
-      const iframe = document.createElement("iframe");
-      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
-      iframe.title = "Social Fokus Video";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-      iframe.allowFullscreen = true;
-      ytFacade.replaceWith(iframe);
-    };
-    ytFacade.addEventListener("click", loadVideo);
-    ytFacade.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        loadVideo();
-      }
-    });
-  }
-
   /* ---------- About: Martin / Juha profile switch ---------- */
   const aboutSection = document.querySelector(".about[data-active-profile]");
   if (aboutSection) {
