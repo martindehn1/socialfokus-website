@@ -797,13 +797,18 @@ h2 {
 }
 
 .about-photo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 50% 25%;
-  position: relative;
-  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
 }
+
+.about[data-active-profile="martin"] .about-photo[data-profile-photo="martin"] { opacity: 1; }
+.about[data-active-profile="juha"] .about-photo[data-profile-photo="juha"] { opacity: 1; }
 
 .about-frame-num {
   position: absolute;
@@ -817,7 +822,12 @@ h2 {
   padding: 6px 14px;
   border-radius: 100px;
   z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
 }
+
+.about[data-active-profile="martin"] .about-frame-num[data-profile-badge="martin"] { opacity: 1; }
+.about[data-active-profile="juha"] .about-frame-num[data-profile-badge="juha"] { opacity: 1; }
 
 .about-text p:not(.tag) {
   color: var(--text-dim);
@@ -825,6 +835,12 @@ h2 {
   font-size: 1.02rem;
   max-width: 560px;
 }
+
+.profile-panel {
+  transition: opacity 0.3s var(--ease);
+}
+
+.profile-panel.is-fading { opacity: 0; }
 
 .team-credit {
   display: flex;
@@ -836,7 +852,19 @@ h2 {
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.03);
   width: fit-content;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), transform 0.3s var(--ease);
 }
+
+.team-credit:hover {
+  border-color: rgba(255, 61, 61, 0.4);
+  background: rgba(255, 61, 61, 0.06);
+  transform: translateY(-2px);
+}
+
+.team-credit:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .team-avatar {
   width: 34px;

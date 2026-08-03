@@ -330,34 +330,61 @@
   </section>
 
   <!-- ÜBER MARTIN -->
-  <section class="about" id="martin">
+  <section class="about" id="martin" data-active-profile="martin">
     <div class="section-inner about-grid">
       <div class="about-visual reveal" data-reveal>
         <div class="about-frame">
-          <img src="assets/img/martin-dehn.jpg" alt="Martin Dehn" class="about-photo">
-          <span class="about-frame-num">600K</span>
+          <img src="assets/img/martin-dehn.jpg" alt="Martin Dehn" class="about-photo" data-profile-photo="martin">
+          <img src="assets/img/juha-strube.jpg" alt="Juha Strube" class="about-photo" data-profile-photo="juha">
+          <span class="about-frame-num" data-profile-badge="martin">600K</span>
+          <span class="about-frame-num" data-profile-badge="juha">20+ Jahre</span>
         </div>
       </div>
-      <div class="about-text">
-        <p class="tag reveal" data-reveal>Wer steckt dahinter</p>
-        <h2 class="reveal" data-reveal>Martin Dehn — <span class="accent">600.000 Abonnenten,</span> ein Ziel: dein Content.</h2>
-        <p class="reveal" data-reveal>
-          Ich bin Martin Dehn und habe mir mit meinem Content eine Reichweite von über
-          600.000 Abonnenten aufgebaut. Genau dieses Know-how — was funktioniert, was Menschen
-          stoppen lässt, was zu Verkäufen führt — stecke ich mit meinem Team in Social Fokus.
-        </p>
-        <p class="reveal" data-reveal>
-          Statt dir Tipps zu geben, mache ich es einfach für dich: Ich komme mit meinem Team
-          persönlich vorbei, wir drehen, schneiden und planen deinen kompletten Content — und
-          auf Wunsch stehe ich selbst vor deiner Kamera.
-        </p>
+      <div class="about-text reveal" data-reveal>
 
-        <div class="team-credit reveal" data-reveal>
-          <img src="assets/img/juha-strube.jpg" alt="Juha Strube" class="team-avatar">
-          <p><strong>Juha Strube</strong> — Kamera &amp; Produktion bei Social Fokus</p>
+        <div class="profile-panel" data-profile-panel="martin">
+          <p class="tag">Wer steckt dahinter</p>
+          <h2>Martin Dehn — <span class="accent">600.000 Abonnenten,</span> ein Ziel: dein Content.</h2>
+          <p>
+            Ich bin Martin Dehn und habe mir mit meinem Content eine Reichweite von über
+            600.000 Abonnenten aufgebaut. Genau dieses Know-how — was funktioniert, was Menschen
+            stoppen lässt, was zu Verkäufen führt — stecke ich mit meinem Team in Social Fokus.
+          </p>
+          <p>
+            Statt dir Tipps zu geben, mache ich es einfach für dich: Ich komme mit meinem Team
+            persönlich vorbei, wir drehen, schneiden und planen deinen kompletten Content — und
+            auf Wunsch stehe ich selbst vor deiner Kamera.
+          </p>
+          <button type="button" class="team-credit" data-switch-profile="juha">
+            <img src="assets/img/juha-strube.jpg" alt="Juha Strube" class="team-avatar">
+            <p><strong>Juha Strube</strong> — Kamera &amp; Produktion bei Social Fokus</p>
+          </button>
+          <a href="#kontakt" class="btn btn-primary">Jetzt Drehtag anfragen</a>
         </div>
 
-        <a href="#kontakt" class="btn btn-primary reveal" data-reveal>Jetzt Drehtag anfragen</a>
+        <div class="profile-panel" data-profile-panel="juha" hidden>
+          <p class="tag">Der Mann hinter der Kamera</p>
+          <h2>Juha Strube — <span class="accent">seit über 20 Jahren hinter der Linse.</span></h2>
+          <p>
+            Ich bin 38 und die Kamera begleitet mich seit meiner Jugend — mit 15 habe ich
+            angefangen, Videos zu schneiden und unterhaltsamen Content zu machen, von Comedy
+            über Musik bis zu kleinen Formaten. Aus der Leidenschaft, Menschen zum Lachen zu
+            bringen, wurde mein Beruf.
+          </p>
+          <p>
+            Seit über 20 Jahren entwickle ich mich in der Foto- und Videografie weiter — von
+            Musikvideos über Hochzeiten bis zu Imagefilmen, zwischenzeitlich mit eigenem
+            Fotostudio. Seit über 13 Jahren arbeite ich eng mit Martin zusammen: Mit Social Fokus
+            verbinden wir diese Erfahrung mit dem Blick für Inhalte, die nicht nur gut aussehen,
+            sondern Menschen wirklich erreichen.
+          </p>
+          <button type="button" class="team-credit" data-switch-profile="martin">
+            <img src="assets/img/martin-dehn.jpg" alt="Martin Dehn" class="team-avatar">
+            <p><strong>Martin Dehn</strong> — Gründer von Social Fokus</p>
+          </button>
+          <a href="#kontakt" class="btn btn-primary">Jetzt Drehtag anfragen</a>
+        </div>
+
       </div>
     </div>
   </section>
