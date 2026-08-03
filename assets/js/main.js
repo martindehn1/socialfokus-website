@@ -131,6 +131,42 @@
     });
   }
 
+  /* ---------- About: Martin / Juha profile switch ---------- */
+  const aboutSection = document.querySelector(".about[data-active-profile]");
+  if (aboutSection) {
+    const switchButtons = aboutSection.querySelectorAll("[data-switch-profile]");
+    let switching = false;
+
+    switchButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.switchProfile;
+        const current = aboutSection.dataset.activeProfile;
+        if (switching || target === current) return;
+
+        const oldPanel = aboutSection.querySelector(`[data-profile-panel="${current}"]`);
+        const newPanel = aboutSection.querySelector(`[data-profile-panel="${target}"]`);
+        if (!oldPanel || !newPanel) return;
+
+        switching = true;
+        aboutSection.dataset.activeProfile = target;
+        oldPanel.classList.add("is-fading");
+
+        setTimeout(() => {
+          oldPanel.hidden = true;
+          oldPanel.classList.remove("is-fading");
+          newPanel.hidden = false;
+          newPanel.classList.add("is-fading");
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              newPanel.classList.remove("is-fading");
+              switching = false;
+            });
+          });
+        }, 300);
+      });
+    });
+  }
+
   /* ---------- Parallax blobs ---------- */
   const blobA = document.querySelector(".blob-a");
   const blobB = document.querySelector(".blob-b");
