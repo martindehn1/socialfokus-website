@@ -159,7 +159,7 @@ function initMap() {
 
   const map = new maplibregl.Map({
     container: "map",
-    style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+    style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
     center: [9.99, 53.565],
     zoom: 11.2,
     attributionControl: true
