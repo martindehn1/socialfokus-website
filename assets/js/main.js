@@ -1,163 +1,77 @@
 (() => {
-  "use strict";
+  const nav = document.getElementById('siteNav');
+  const navLinks = document.getElementById('navLinks');
+  const navToggle = document.getElementById('navToggle');
+  const progressBar = document.getElementById('progressBar');
+  const yearEl = document.getElementById('year');
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Nav scroll state ---------- */
-  const nav = document.getElementById("siteNav");
-  const progressBar = document.getElementById("progressBar");
-
+  // Scroll state: translucent nav becomes opaque, progress bar fills.
   const onScroll = () => {
-    const scrollTop = window.scrollY;
-    nav.classList.toggle("scrolled", scrollTop > 20);
-
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = pct + "%";
+
+    nav.classList.toggle('is-scrolled', scrollTop > 8);
+    if (progressBar) progressBar.style.width = `${pct}%`;
   };
-  window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---------- Mobile nav toggle ---------- */
-  const navToggle = document.getElementById("navToggle");
-  const navLinks = document.querySelector(".nav-links");
-  navToggle.addEventListener("click", () => {
-    const open = navLinks.classList.toggle("open");
-    navToggle.classList.toggle("open", open);
-    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  // Mobile menu: opens and closes along the same edge (right), never traps focus.
+  const closeMenu = () => {
+    navLinks.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Menü öffnen');
+  };
+  const openMenu = () => {
+    navLinks.classList.add('is-open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    navToggle.setAttribute('aria-label', 'Menü schließen');
+  };
+
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.contains('is-open');
+      isOpen ? closeMenu() : openMenu();
+    });
+  }
+
+  navLinks.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
   });
-  navLinks.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => {
-      navLinks.classList.remove("open");
-      navToggle.classList.remove("open");
-      navToggle.setAttribute("aria-expanded", "false");
-    })
-  );
 
-  /* ---------- Cursor glow (desktop only) ---------- */
-  const glow = document.querySelector(".cursor-glow");
-  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    window.addEventListener("pointermove", (e) => {
-      glow.style.opacity = "1";
-      glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-    });
-    window.addEventListener("pointerleave", () => (glow.style.opacity = "0"));
-  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
 
-  /* ---------- Scroll reveal ---------- */
-  const revealEls = document.querySelectorAll("[data-reveal]");
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const delay = (Array.from(el.parentElement.children).indexOf(el) % 6) * 70;
-          setTimeout(() => el.classList.add("in-view"), delay);
-          revealObserver.unobserve(el);
-        }
-      });
-    },
-    { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
-  );
-  revealEls.forEach((el) => revealObserver.observe(el));
+  // Logo placeholders: swap a missing logo file for a text chip instead of a broken-image icon.
+  document.querySelectorAll('.logo-row img').forEach((img) => {
+    img.addEventListener('error', () => {
+      const chip = document.createElement('span');
+      chip.className = 'logo-fallback';
+      chip.textContent = img.alt;
+      img.replaceWith(chip);
+    }, { once: true });
+  });
 
-  /* ---------- Hero headline word-reveal trigger ---------- */
-  const hero = document.getElementById("hero");
-  requestAnimationFrame(() => hero.classList.add("in-view"));
-
-  /* ---------- Count-up numbers ---------- */
-  const formatNumber = (n) => new Intl.NumberFormat("de-DE").format(Math.round(n));
-
-  const countEls = document.querySelectorAll(".count-up");
-  const countObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        const target = parseFloat(el.dataset.count);
-        const suffix = el.dataset.suffix || "";
-        const duration = 1800;
-        const start = performance.now();
-
-        const step = (now) => {
-          const progress = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = formatNumber(target * eased) + (progress >= 1 ? suffix : "");
-          if (progress < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-        countObserver.unobserve(el);
-      });
-    },
-    { threshold: 0.5 }
-  );
-  countEls.forEach((el) => countObserver.observe(el));
-
-  /* ---------- Timeline fill on scroll ---------- */
-  const timeline = document.querySelector(".timeline");
-  const timelineFill = document.getElementById("timelineFill");
-  if (timeline && timelineFill) {
-    const updateTimeline = () => {
-      const rect = timeline.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = rect.height;
-      const visible = Math.min(Math.max(vh * 0.75 - rect.top, 0), total);
-      const pct = total > 0 ? (visible / total) * 100 : 0;
-      timelineFill.style.height = pct + "%";
-    };
-    window.addEventListener("scroll", updateTimeline, { passive: true });
-    window.addEventListener("resize", updateTimeline);
-    updateTimeline();
-  }
-
-  /* ---------- About: Martin / Juha profile switch ---------- */
-  const aboutSection = document.querySelector(".about[data-active-profile]");
-  if (aboutSection) {
-    const switchButtons = aboutSection.querySelectorAll("[data-switch-profile]");
-    let switching = false;
-
-    switchButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const target = btn.dataset.switchProfile;
-        const current = aboutSection.dataset.activeProfile;
-        if (switching || target === current) return;
-
-        const oldPanel = aboutSection.querySelector(`[data-profile-panel="${current}"]`);
-        const newPanel = aboutSection.querySelector(`[data-profile-panel="${target}"]`);
-        if (!oldPanel || !newPanel) return;
-
-        switching = true;
-        aboutSection.dataset.activeProfile = target;
-        oldPanel.classList.add("is-fading");
-
-        setTimeout(() => {
-          oldPanel.hidden = true;
-          oldPanel.classList.remove("is-fading");
-          newPanel.hidden = false;
-          newPanel.classList.add("is-fading");
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              newPanel.classList.remove("is-fading");
-              switching = false;
-            });
-          });
-        }, 300);
-      });
-    });
-  }
-
-  /* ---------- Parallax blobs ---------- */
-  const blobA = document.querySelector(".blob-a");
-  const blobB = document.querySelector(".blob-b");
-  if (blobA && blobB) {
-    window.addEventListener(
-      "scroll",
-      () => {
-        const y = window.scrollY;
-        blobA.style.translate = `0 ${y * 0.12}px`;
-        blobB.style.translate = `0 ${y * -0.08}px`;
+  // Scroll reveal — opacity/transform only, respects prefers-reduced-motion via CSS.
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
       },
-      { passive: true }
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
     );
+    revealEls.forEach((el) => io.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
   }
 })();

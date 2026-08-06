@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://socialfokus.de/sitemap.xml
+Sitemap: https://martindehn.com/sitemap.xml
